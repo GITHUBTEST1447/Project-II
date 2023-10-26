@@ -56,10 +56,15 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 resource "aws_ecs_task_definition" "task_definition" {
   family = "Flask-App-Task-Definition"
   network_mode = "awsvpc"
-  operating_system_family = "linux"
   required_compatabilities = ["FARGATE"]
   cpu = "512"
   memory = "2048"
+
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
+  }
+
   execution_role_arn = var.execution_role_arn
   task_role = var.ecs_task_role
   container_definitions = local.container_definition
