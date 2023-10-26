@@ -49,7 +49,7 @@ resource "null_resource" "setup_db" {
   depends_on = [aws_db_instance.database]
 
   provisioner "local-exec" {
-    command = "./setup-database.sh"
+    command = "${path.module}/setup-database.sh"
 
     environment = {
       db_host     = aws_db_instance.database.address
