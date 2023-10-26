@@ -20,7 +20,7 @@ variable "region" {
 data "aws_subnets" "private_subnets" { # Gathers all subnets in the VPC
     filter {
         name   = "vpc-id"
-        values = [var.data.aws-vpc.id]
+        values = [data.aws_vpc.aws-vpc.id]
     }
 
     filter {
@@ -32,7 +32,7 @@ data "aws_subnets" "private_subnets" { # Gathers all subnets in the VPC
 data "aws_subnets" "public_subnets" { # Gathers all subnets in the VPC
     filter {
         name   = "vpc-id"
-        values = [var.data.aws-vpc.id]
+        values = [data.aws_vpc.aws-vpc.id]
     }
 
     filter {

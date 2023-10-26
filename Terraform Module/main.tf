@@ -8,7 +8,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 resource "aws_security_group" "rds_sg" {
   name                          = "Terraform RDS SG"
   description                   = "Allow ECS access to RDS"
-  vpc_id                        = var.var.data.aws-vpc.id
+  vpc_id                        = data.aws_vpc.aws-vpc.id
 
   ingress {
     from_port                   = 5432
@@ -41,4 +41,8 @@ resource "aws_db_instance" "database" { # NEED TO ACTUALLY HAVE THE DATABASE AUT
   instance_class                = "db.t3.micro"
   db_subnet_group_name          = aws_db_subnet_group.db_subnet_group.name
   vpc_security_group_ids        = [aws_security_group.rds_sg.id]
+
+  depends_on = [
+    data.aws_vpc.aws-vpc
+  ]
 }
