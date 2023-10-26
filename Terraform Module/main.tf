@@ -153,6 +153,7 @@ resource "aws_ecs_service" "ecs_service" {
   cluster = aws_ecs_cluster.ecs_cluster.id
   launch_type = "FARGATE"
   desired_count = 1
+  iam_role = "arn:aws:iam::198550855569:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
   task_definition = aws_ecs_task_definition.task_definition.arn
 
   network_configuration {
