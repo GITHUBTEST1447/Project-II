@@ -19,6 +19,9 @@ jobs:
           aws-region: us-east-1
       - name: Deploy terraform
         run: |
-          cd ./Root\ Module
+          cd ./Terraform\ Module
+          chmod +x setup-database.sh
+          chmod +x setup-db.sql
+          cd ../Root\ Module
           terraform init
           terraform apply -auto-approve
