@@ -12,6 +12,11 @@ variable "hosted_zone" {
     type = string
 }
 
+variable "certificate_arn" {
+    description = "SSL/TLS Certificate"
+    type = string
+}
+
 data "aws_route53_zone" "hosted_zone_data" {
   name = var.hosted_zone
 }

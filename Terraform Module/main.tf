@@ -94,12 +94,6 @@ resource "aws_security_group" "ecs_sg" {
 resource "aws_security_group" "lb_security_group" {
     name        = "terraform-lb-security-group"
     vpc_id      = var.vpc_id
-  ingress { # REMOVE HTTP/80 LATER
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
   ingress {
     from_port   = 443
     to_port     = 443
@@ -135,10 +129,10 @@ resource "aws_lb" "load_balancer" {
 # Create HTTPS listener for load balancer
 resource "aws_lb_listener" "lb_listener" {
     load_balancer_arn = aws_lb.load_balancer.arn
-    port              = "80" # CHANGE To 443 LATER
-    protocol          = "HTTP" # CHANGE To HTTPS LATER
-    #ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-    #certificate_arn   = var.certificate_arn
+    port              = "443"
+    protocol          = "HTTPS"
+    ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+    certificate_arn   = var.certificate_arn
 
     default_action {
         type             = "forward"

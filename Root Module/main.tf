@@ -22,5 +22,6 @@ module "terraform-module" {
     source = "../Terraform Module"
     vpc_id = module.aws-vpc.vpc_id
     hosted_zone = "steffenaws.net"
+    certificate_arn = "arn:aws:acm:us-east-1:198550855569:certificate/5df6eb6e-95a0-4fa1-ad66-9791a84cac4f"
     region = "us-east-1"
 }
