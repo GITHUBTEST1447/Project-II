@@ -8,7 +8,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 resource "aws_security_group" "rds_sg" {
   name                          = "Terraform RDS SG"
   description                   = "Allow ECS access to RDS"
-  vpc_id                        = var.vpc_id
+  vpc_id                        = var.var.data.aws-vpc.id
 
   ingress {
     from_port                   = 5432
