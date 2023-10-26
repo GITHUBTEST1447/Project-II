@@ -91,6 +91,62 @@ resource "aws_security_group" "ecs_sg" {
   }
 }
 
+# Security group for ECS' Load Balancer
+resource "aws_security_group" "lb_security_group" {
+    name        = "terraform-lb-security-group"
+    vpc_id      = var.vpc_id
+  ingress { # REMOVE HTTP/80 LATER
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Target group for ECS' Load Balancer
+resource "aws_lb_target_group" "target_group" {
+    name =      "terraform-target-group"
+    port =      80
+    protocol =  "HTTP"
+    target_type = "ip"
+    vpc_id =    var.vpc_id
+}
+
+# Load Balancer for AWS ECS Service
+resource "aws_lb" "load_balancer" {
+  name = "terraform-lb-ecs"
+  internal = false
+  load_balancer_type = application
+  security_groups = [aws_security_group.lb_security_group.id]
+  subnets = data.aws_subnets.public_subnets.ids
+}
+
+# Create HTTPS listener for load balancer
+resource "aws_lb_listener" "lb_listener" {
+    load_balancer_arn = aws_lb.load_balancer.arn
+    port              = "80" # CHANGE To 443 LATER
+    protocol          = "HTTP" # CHANGE To HTTPS LATER
+    #ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+    #certificate_arn   = var.certificate_arn
+
+    default_action {
+        type             = "forward"
+        target_group_arn = aws_lb_target_group.target_group.arn
+    }
+}
+
 # ECS SERVICE NEXT
 resource "aws_ecs_service" "ecs_service" {
   name = "flaskapp-service"
@@ -104,4 +160,18 @@ resource "aws_ecs_service" "ecs_service" {
     assign_public_ip = true # Remove this later
     security_groups = [aws_security_group.ecs_sg.id]
   }
+
+  load_balancer {
+    target_group_arn = aws_lb_listener.lb_listener.arn
+    container_name = "flaskapp-container"
+    container_port = "80"
+  }
 }
+
+
+# ADD LOAD BALANCER (RESOURCE AND AS PART OF SERVICE)
+# FIGURE OUT CONFIGURATION FOR RDS DATABASE
+# ROUTE 53 RECORD -> Load BALANCER
+# TERRAFORM TESTING IN CI/CD WORKFLOW
+# FIX SECURITY ISSUES, AWS SECRETS MANAGER
+# HEALTH CHECKS?
