@@ -14,7 +14,7 @@ resource "aws_security_group" "rds_sg" {
     from_port                   = 5432
     to_port                     = 5432
     protocol                    = "tcp"
-    cidr_blocks                 = ["0.0.0.0/0"]
+    cidr_blocks                 = ["0.0.0.0/0"] # REMOVE LATER
     #security_groups = [ THE ECS SECURITY GROUP ]  COMPLETE LATER
   }
   egress {
@@ -70,6 +70,27 @@ resource "aws_ecs_task_definition" "task_definition" {
   container_definitions = local.container_definition
 }
 
+# ECS SECURITY GROUP
+resource "aws_security_group" "ecs_sg" {
+  name                          = "Terraform ECS SG"
+  description                   = "Configure ECS access"
+  vpc_id                        = data.aws_vpc.aws-vpc.id
+
+  ingress {
+    from_port                   = 80
+    to_port                     = 80
+    protocol                    = "tcp"
+    cidr_blocks                 = ["0.0.0.0/0"] # REMOVE LATER
+    #security_groups = [ THE LB SECURITY GROUP ]  COMPLETE LATER
+  }
+  egress {
+    from_port                   = 0
+    to_port                     = 0
+    protocol                    = "-1"
+    cidr_blocks                 = ["0.0.0.0/0"]
+  }
+}
+
 # ECS SERVICE NEXT
 resource "aws_ecs_service" "ecs_service" {
   name = "flaskapp-service"
@@ -77,4 +98,10 @@ resource "aws_ecs_service" "ecs_service" {
   launch_type = "FARGATE"
   desired_count = 1
   task_definition = aws_ecs_task_definition.task_definition.arn
+
+  network_configuration {
+    subnets = data.aws_subnets.private_subnets.ids
+    assign_public_ip = true # Remove this later
+    security_groups = [aws_security_group.ecs_sg]
+  }
 }
