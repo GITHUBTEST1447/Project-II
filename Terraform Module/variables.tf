@@ -40,3 +40,52 @@ data "aws_subnets" "public_subnets" { # Gathers all subnets in the VPC
         values = ["Public"]
     }
 }
+
+variable "execution_role_arn" {
+    default = "arn:aws:iam::198550855569:role/ecsTaskExecutionRole"
+}
+
+variable "ecs_task_role" {
+    default = "arn:aws:iam::198550855569:role/ECS-FULL-ACCESS"
+}
+
+# Container definition for ECS task
+locals {
+  container_definition = jsonencode([
+    {
+      name  = "my-container"
+      image = "steffenp123/flaskapp"
+      essential = true
+      portMappings = [
+        {
+          containerPort = 80
+          hostPort      = 80
+          protocol      = "tcp"
+        }
+      ]
+      environment = [
+        {
+          name  = "POSTGRES_PASSWORD"
+          value = "test12345"
+        },
+        {
+          name  = "POSTGRES_USER"
+          value = "postgres"
+        },
+        {
+          name  = "POSTGRES_DB"
+          value = "postgres"
+        },
+        {
+          name  = "DB_HOSTNAME"
+          value = aws_db_instance.database.arn
+        }
+      ]
+      ephemeralStorage = {
+        sizeInGiB = 20
+      }
+      memory = 2048 # This is in MiB.
+      cpu    = 512 # This represents the CPU units.
+    }
+  ])
+}

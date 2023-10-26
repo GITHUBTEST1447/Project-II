@@ -36,7 +36,7 @@ resource "aws_db_instance" "database" { # NEED TO ACTUALLY HAVE THE DATABASE AUT
   network_type                  = "IPV4"
   db_name                       = "postgres"
   username                      = "postgres"
-  password                      = "password123"
+  password                      = "password123" # IMPLEMENT AWS SECRETS MANAGER
   skip_final_snapshot           = true
   instance_class                = "db.t3.micro"
   db_subnet_group_name          = aws_db_subnet_group.db_subnet_group.name
@@ -45,4 +45,22 @@ resource "aws_db_instance" "database" { # NEED TO ACTUALLY HAVE THE DATABASE AUT
   depends_on = [
     data.aws_vpc.aws-vpc
   ]
+}
+
+# AWS ECS Cluster
+resource "aws_ecs_cluster" "ecs_cluster" {
+  name = "Terraform ECS Cluster"
+}
+
+# AWS ECS Task Definition
+resource "aws_ecs_task_definition" "task_definition" {
+  family = "Flask-App-Task-Definition"
+  network_mode = "awsvpc"
+  operating_system_family = "linux"
+  required_compatabilities = ["FARGATE"]
+  cpu = "512"
+  memory = "2048"
+  execution_role_arn = var.execution_role_arn
+  task_role = var.ecs_task_role
+  container_definitions = local.container_definition
 }
