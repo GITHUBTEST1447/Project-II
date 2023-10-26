@@ -73,7 +73,7 @@ resource "aws_ecs_task_definition" "task_definition" {
 # ECS SERVICE NEXT
 resource "aws_ecs_service" "ecs_service" {
   name = "flaskapp-service"
-  cluster = aws_ecs_cluster.cluster.id
+  cluster = aws_ecs_cluster.ecs_cluster.id
   launch_type = "FARGATE"
   desired_count = 1
   task_definition = aws_ecs_task_definition.task_definition.arn
