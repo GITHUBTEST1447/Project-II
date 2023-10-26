@@ -162,7 +162,7 @@ resource "aws_ecs_service" "ecs_service" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_listener.lb_listener.arn
+    target_group_arn = aws_target_group.target_group.arn
     container_name = "flaskapp-container"
     container_port = "80"
   }
