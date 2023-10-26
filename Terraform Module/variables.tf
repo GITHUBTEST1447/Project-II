@@ -51,41 +51,43 @@ variable "ecs_task_role_arn" {
 
 # Container definition for ECS task
 locals {
-  container_definition = jsonencode([
+  container_definitions = <<DEFINITION
+  [
     {
-      name  = "my-container"
-      image = "steffenp123/flaskapp"
-      essential = true
-      portMappings = [
+      "name": "flaskapp-container",
+      "image": "steffenp123/flaskapp",
+      "essential": true,
+      "portMappings": [
         {
-          containerPort = 80
-          hostPort      = 80
-          protocol      = "tcp"
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
         }
-      ]
-      environment = [
+      ],
+      "environment": [
         {
-          name  = "POSTGRES_PASSWORD"
-          value = "test12345"
+          "name": "POSTGRES_PASSWORD",
+          "value": "test12345"
         },
         {
-          name  = "POSTGRES_USER"
-          value = "postgres"
+          "name": "POSTGRES_USER",
+          "value": "postgres"
         },
         {
-          name  = "POSTGRES_DB"
-          value = "postgres"
+          "name": "POSTGRES_DB",
+          "value": "postgres"
         },
         {
-          name  = "DB_HOSTNAME"
-          value = aws_db_instance.database.arn
+          "name": "DB_HOSTNAME",
+          "value": "${aws_db_instance.database.arn}"
         }
-      ]
-      ephemeralStorage = {
-        sizeInGiB = 20
-      }
-      memory = 2048 # This is in MiB.
-      cpu    = 512 # This represents the CPU units.
+      ],
+      "ephemeralStorage": {
+        "sizeInGiB": 20
+      },
+      "memory": 2048,
+      "cpu": 512
     }
-  ])
+  ]
+  DEFINITION
 }
