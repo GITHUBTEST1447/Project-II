@@ -76,15 +76,15 @@ locals {
       "environment": [
         {
           "name": "POSTGRES_PASSWORD",
-          "value": "test12345"
+          "value": "${var.db_password}"
         },
         {
           "name": "POSTGRES_USER",
-          "value": "postgres"
+          "value": "${var.db_user}"
         },
         {
           "name": "POSTGRES_DB",
-          "value": "postgres"
+          "value": "${var.db_name}"
         },
         {
           "name": "DB_HOSTNAME",
@@ -99,4 +99,16 @@ locals {
     }
   ]
   DEFINITION
+}
+
+variable "db_name" {
+    default = "postgres"
+}
+
+variable "db_user" {
+    default = "postgres"
+}
+
+variable "db_password" {
+    "password123"
 }

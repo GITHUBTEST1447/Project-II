@@ -34,17 +34,30 @@ resource "aws_db_instance" "database" { # NEED TO ACTUALLY HAVE THE DATABASE AUT
   max_allocated_storage         = 200
   allocated_storage             = 20
   network_type                  = "IPV4"
-  db_name                       = "postgres"
-  username                      = "postgres"
-  password                      = "password123" # IMPLEMENT AWS SECRETS MANAGER
+  db_name                       = var.db_name
+  username                      = var.db_user
+  password                      = var.db_password # IMPLEMENT AWS SECRETS MANAGER
   skip_final_snapshot           = true
   instance_class                = "db.t3.micro"
   db_subnet_group_name          = aws_db_subnet_group.db_subnet_group.name
   vpc_security_group_ids        = [aws_security_group.rds_sg.id]
 
-  depends_on = [
-    data.aws_vpc.aws-vpc
-  ]
+  depends_on = [data.aws_vpc.aws-vpc]
+}
+
+resource "null_resource" "setup_db" {
+  depends_on = [aws_db_instance.database]
+
+  provisioner "local-exec" {
+    command = "./setup-database.sh"
+
+    environment = {
+      db_host     = aws_db_instance.database.address
+      db_user     = var.db_user
+      db_password = var.db_password
+      db_name     = var.db_name
+    }
+  }
 }
 
 # AWS ECS Cluster
@@ -173,10 +186,7 @@ resource "aws_route53_record" "route53_record" {
   }
 }
 
-
-# ADD LOAD BALANCER (RESOURCE AND AS PART OF SERVICE)
 # FIGURE OUT CONFIGURATION FOR RDS DATABASE
-# ROUTE 53 RECORD -> Load BALANCER
 # TERRAFORM TESTING IN CI/CD WORKFLOW
 # FIX SECURITY ISSUES, AWS SECRETS MANAGER
 # HEALTH CHECKS?
