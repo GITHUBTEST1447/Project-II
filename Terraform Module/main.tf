@@ -56,7 +56,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 resource "aws_ecs_task_definition" "task_definition" {
   family = "Flask-App-Task-Definition"
   network_mode = "awsvpc"
-  requires_compatabilities = ["FARGATE"]
+  requires_compatibilities = ["FARGATE"]
   cpu = "512"
   memory = "2048"
 
