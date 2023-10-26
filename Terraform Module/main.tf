@@ -100,7 +100,7 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition = aws_ecs_task_definition.task_definition.arn
 
   network_configuration {
-    subnets = data.aws_subnets.private_subnets.ids
+    subnets = data.aws_subnets.public_subnets.ids # CHANGE TO PRIVATE SUBNETS LATER
     assign_public_ip = true # Remove this later
     security_groups = [aws_security_group.ecs_sg.id]
   }
