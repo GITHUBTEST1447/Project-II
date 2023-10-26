@@ -45,7 +45,7 @@ variable "execution_role_arn" {
     default = "arn:aws:iam::198550855569:role/ecsTaskExecutionRole"
 }
 
-variable "ecs_task_role" {
+variable "ecs_task_role_arn" {
     default = "arn:aws:iam::198550855569:role/ECS-FULL-ACCESS"
 }
 

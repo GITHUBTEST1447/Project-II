@@ -56,7 +56,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 resource "aws_ecs_task_definition" "task_definition" {
   family = "Flask-App-Task-Definition"
   network_mode = "awsvpc"
-  required_compatabilities = ["FARGATE"]
+  requires_compatabilities = ["FARGATE"]
   cpu = "512"
   memory = "2048"
 
@@ -66,6 +66,6 @@ resource "aws_ecs_task_definition" "task_definition" {
   }
 
   execution_role_arn = var.execution_role_arn
-  task_role = var.ecs_task_role
+  task_role_arn = var.ecs_task_role_arn
   container_definitions = local.container_definition
 }
