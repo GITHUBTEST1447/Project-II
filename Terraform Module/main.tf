@@ -49,7 +49,7 @@ resource "aws_db_instance" "database" { # NEED TO ACTUALLY HAVE THE DATABASE AUT
 
 # AWS ECS Cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "Terraform ECS Cluster"
+  name = "Terraform-ECS-Cluster"
 }
 
 # AWS ECS Task Definition
@@ -69,3 +69,5 @@ resource "aws_ecs_task_definition" "task_definition" {
   task_role_arn = var.ecs_task_role_arn
   container_definitions = local.container_definition
 }
+
+# ECS SERVICE NEXT
