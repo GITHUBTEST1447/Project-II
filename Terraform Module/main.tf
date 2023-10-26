@@ -128,7 +128,7 @@ resource "aws_lb_target_group" "target_group" {
 resource "aws_lb" "load_balancer" {
   name = "terraform-lb-ecs"
   internal = false
-  load_balancer_type = application
+  load_balancer_type = "application"
   security_groups = [aws_security_group.lb_security_group.id]
   subnets = data.aws_subnets.public_subnets.ids
 }
