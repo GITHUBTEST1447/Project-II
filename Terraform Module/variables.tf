@@ -51,7 +51,7 @@ variable "ecs_task_role_arn" {
 
 # Container definition for ECS task
 locals {
-  container_definitions = <<DEFINITION
+  container_definition = <<DEFINITION
   [
     {
       "name": "flaskapp-container",
