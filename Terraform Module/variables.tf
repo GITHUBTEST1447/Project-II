@@ -110,5 +110,5 @@ variable "db_user" {
 }
 
 variable "db_password" {
-    "password123"
+    default = "password123"
 }
