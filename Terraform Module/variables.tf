@@ -12,6 +12,10 @@ variable "hosted_zone" {
     type = string
 }
 
+data "aws_route53_zone" "hosted_zone_data" {
+  name = var.hosted_zone
+}
+
 variable "region" {
     type = string
     description = "Region to deploy in AWS"

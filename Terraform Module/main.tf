@@ -80,7 +80,6 @@ resource "aws_security_group" "ecs_sg" {
     from_port                   = 80
     to_port                     = 80
     protocol                    = "tcp"
-    #cidr_blocks                 = ["0.0.0.0/0"] # REMOVE LATER
     security_groups = [aws_security_group.lb_security_group.id] 
   }
   egress {
@@ -165,6 +164,18 @@ resource "aws_ecs_service" "ecs_service" {
     target_group_arn = aws_lb_target_group.target_group.arn
     container_name = "flaskapp-container"
     container_port = "80"
+  }
+}
+
+# Create Route 53 record that points to ALB
+resource "aws_route53_record" "route53_record" {
+    zone_id = data.aws_route53_zone.hosted_zone_data.zone_id
+    name = "twotierapp.${var.hosted_zone}"
+    type = "A"
+    alias {
+    name                   = aws_lb.load_balancer.dns_name
+    zone_id                = aws_lb.load_balancer.zone_id
+    evaluate_target_health = false
   }
 }
 
