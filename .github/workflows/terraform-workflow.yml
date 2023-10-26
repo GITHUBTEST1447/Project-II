@@ -19,7 +19,6 @@ jobs:
           aws-region: us-east-1
       - name: Deploy terraform
         run: |
-          ls
-          cd ./Terraform
+          cd ./Root Module
           terraform init
           terraform apply -auto-approve
