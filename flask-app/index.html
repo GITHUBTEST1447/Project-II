@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Person Registry</title>
+</head>
+<body>
+
+    <div>
+        <h2>Add a New Person</h2>
+        <!-- The form action here corresponds with the '/add' endpoint in the Flask app, and it uses POST method -->
+        <form action="/add" method="post">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br> <!-- The 'name' attribute is important here -->
+            
+            <label for="age">Age:</label><br>
+            <input type="number" id="age" name="age" required><br> <!-- The 'name' attribute is important here -->
+            
+            <input type="submit" value="Add Person">
+        </form>
+    </div>
+
+    <div>
+        <h2>Search for a Person</h2>
+        <!-- The form action here corresponds with the '/search' endpoint in the Flask app, and it uses GET method -->
+        <form action="/search" method="get">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name-search" name="name" required><br> <!-- The 'name' attribute is important here -->
+            
+            <input type="submit" value="Search">
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+name: Run and Deploy Terraform Code
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform
+    steps:
+      - name: Retrive code from repository
+        uses: actions/checkout@v3
+      - name: Install nodejs
+        run: |
+          apk add --update nodejs npm 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Deploy terraform
+        run: |
+          terraform init
+          terraform apply -auto-approve

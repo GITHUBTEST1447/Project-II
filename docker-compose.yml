@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    container_name: db
+    env_file:
+      - ./env-variables/postgres.env
+    volumes:
+      - database:/var/lib/postgresql/data
+  flask-app:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/flask.dockerfile
+    env_file:
+      - ./env-variables/postgres.env
+    container_name: flask-app 
+    stdin_open: true
+    tty: true
+    ports:
+      - 5000:80
+volumes:
+  database:
