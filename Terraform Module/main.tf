@@ -1,7 +1,7 @@
 # DB Subnet group for RDS database
 resource "aws_db_subnet_group" "db_subnet_group" {
   name                          = "terraform-vpc-db-subnet-group"
-  subnet_ids                    = data.aws_subnets.public_subnets.ids
+  subnet_ids                    = data.aws_subnets.private_subnets.ids
 }
 
 # Security group for RDS Database
@@ -35,21 +35,6 @@ resource "aws_db_instance" "database" { # NEED TO ACTUALLY HAVE THE DATABASE AUT
   vpc_security_group_ids        = [aws_security_group.rds_sg.id]
 
   depends_on = [data.aws_vpc.aws-vpc]
-}
-
-resource "null_resource" "setup_db" {
-  depends_on = [aws_db_instance.database]
-
-  provisioner "local-exec" {
-    command = "\"${path.module}/setup-database.sh\""
-
-    environment = {
-      db_host     = aws_db_instance.database.address
-      db_user     = var.db_user
-      db_password = var.db_password
-      db_name     = var.db_name
-    }
-  }
 }
 
 # AWS ECS Cluster
