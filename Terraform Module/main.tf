@@ -27,16 +27,8 @@ resource "aws_security_group" "rds_sg" {
 
 # RDS Database
 resource "aws_db_instance" "database" { # NEED TO ACTUALLY HAVE THE DATABASE AUTOMATICALLY CONFIGURTED NOW!
-  engine                        = "postgres"
-  engine_version                = "15.3"
+  snapshot_identifier           = var.rds_snapshot
   identifier                    = "terraform-rds-db"
-  storage_type                  = "gp2"
-  max_allocated_storage         = 200
-  allocated_storage             = 20
-  network_type                  = "IPV4"
-  db_name                       = var.db_name
-  username                      = var.db_user
-  password                      = var.db_password # IMPLEMENT AWS SECRETS MANAGER
   skip_final_snapshot           = true
   instance_class                = "db.t3.micro"
   db_subnet_group_name          = aws_db_subnet_group.db_subnet_group.name
@@ -190,3 +182,7 @@ resource "aws_route53_record" "route53_record" {
 # TERRAFORM TESTING IN CI/CD WORKFLOW
 # FIX SECURITY ISSUES, AWS SECRETS MANAGER
 # HEALTH CHECKS?
+
+
+# Destroying resources so that I can update DB to be public access
+# Recreate to see if provisioner works if DB is public

@@ -3,6 +3,10 @@ variable "vpc_id" { # Gathers the VPC
     type = string
 }
 
+variable "rds_snapshot" {
+    type = string
+}
+
 data "aws_vpc" "aws-vpc" {
   id = var.vpc_id
 }
