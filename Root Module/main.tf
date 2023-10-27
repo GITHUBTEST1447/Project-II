@@ -12,7 +12,7 @@ module "aws-vpc" {
                       "Tier" = "Private"
     }
     private_subnets          = ["192.168.3.0/24", "192.168.4.0/24"]
-    enable_nat_gateway       = false
+    enable_nat_gateway       = true
     enable_vpn_gateway       = false
 
 
