@@ -80,15 +80,15 @@ locals {
       "environment": [
         {
           "name": "POSTGRES_PASSWORD",
-          "value": "${var.db_password}"
+          "value": "${local.rds_secret["password"]}"
         },
         {
           "name": "POSTGRES_USER",
-          "value": "${var.db_user}"
+          "value": "${local.rds_secret["username"]}"
         },
         {
           "name": "POSTGRES_DB",
-          "value": "${var.db_name}"
+          "value": "${local.rds_secret["dbname"]}"
         },
         {
           "name": "DB_HOSTNAME",
@@ -114,14 +114,14 @@ locals {
   DEFINITION
 }
 
-variable "db_name" {
-    default = "postgres"
+variable "rds_secret_name" {
+    type = string
 }
 
-variable "db_user" {
-    default = "postgres"
+data "aws_secretsmanager_secret_version" "rds_secret_version" {
+    secret_id = var.rds_secret_name
 }
 
-variable "db_password" {
-    default = "password123"
+locals {
+    rds_secret = jsondecode(data.aws_secretsmanager_secret_version.rds_secret_version.secret_string)
 }
