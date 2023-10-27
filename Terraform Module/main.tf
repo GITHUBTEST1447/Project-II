@@ -1,7 +1,7 @@
 # DB Subnet group for RDS database
 resource "aws_db_subnet_group" "db_subnet_group" {
   name                          = "terraform-vpc-db-subnet-group"
-  subnet_ids                    = data.aws_subnets.private_subnets.ids
+  subnet_ids                    = data.aws_subnets.public_subnets.ids
 }
 
 # Security group for RDS Database
