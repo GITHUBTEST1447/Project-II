@@ -1,9 +1,8 @@
 <html>
-  <head>
-    <title>Project II - Terraform + AWS + Docker/ECS + GitHub Actions</title>
-  </head>
+  <head></head>
 
   <body>
+    <h1>Project II - Terraform + AWS + Docker/ECS + GitHub Actions</h1>
     <h1>Description</h1>
     <p>Project to deploy containerized flask application. Deploys on ECS with a connected RDS database. Load balancing also enabled.</p>
     <h1>Requirements</h1>
