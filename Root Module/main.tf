@@ -25,4 +25,6 @@ module "terraform-module" {
     certificate_arn = "arn:aws:acm:us-east-1:198550855569:certificate/5df6eb6e-95a0-4fa1-ad66-9791a84cac4f"
     region = "us-east-1"
     rds_snapshot = "arn:aws:rds:us-east-1:198550855569:snapshot:terraform-rds-snapshot"
+
+   # depends_on = [module.aws-vpc]
 }

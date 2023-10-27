@@ -14,8 +14,8 @@ resource "aws_security_group" "rds_sg" {
     from_port                   = 5432
     to_port                     = 5432
     protocol                    = "tcp"
-    cidr_blocks                 = ["0.0.0.0/0"] # REMOVE LATER
-    #security_groups = [ THE ECS SECURITY GROUP ]  COMPLETE LATER
+    #cidr_blocks                 = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.ecs_sg.id]
   }
   egress {
     from_port                   = 0
@@ -26,7 +26,7 @@ resource "aws_security_group" "rds_sg" {
 }
 
 # RDS Database
-resource "aws_db_instance" "database" { # NEED TO ACTUALLY HAVE THE DATABASE AUTOMATICALLY CONFIGURTED NOW!
+resource "aws_db_instance" "database" {
   snapshot_identifier           = var.rds_snapshot
   identifier                    = "terraform-rds-db"
   skip_final_snapshot           = true
@@ -141,8 +141,7 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition = aws_ecs_task_definition.task_definition.arn
 
   network_configuration {
-    subnets = data.aws_subnets.public_subnets.ids # CHANGE TO PRIVATE SUBNETS LATER
-    assign_public_ip = true # Remove this later
+    subnets = data.aws_subnets.private_subnets.ids
     security_groups = [aws_security_group.ecs_sg.id]
   }
 
@@ -165,11 +164,9 @@ resource "aws_route53_record" "route53_record" {
   }
 }
 
-# FIGURE OUT CONFIGURATION FOR RDS DATABASE
+# ECS CANT ACCESS RDS???? WTF
+
 # TERRAFORM TESTING IN CI/CD WORKFLOW
 # FIX SECURITY ISSUES, AWS SECRETS MANAGER
 # HEALTH CHECKS?
 
-
-# Destroying resources so that I can update DB to be public access
-# Recreate to see if provisioner works if DB is public

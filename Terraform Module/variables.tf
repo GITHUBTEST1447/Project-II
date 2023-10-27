@@ -92,10 +92,10 @@ locals {
         },
         {
           "name": "DB_HOSTNAME",
-          "value": "${aws_db_instance.database.arn}"
+          "value": "${aws_db_instance.database.address}"
         }
       ],
-      "logConfiguration": {
+      "logConfiguration": { 
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/terraform-ecs-logs",
