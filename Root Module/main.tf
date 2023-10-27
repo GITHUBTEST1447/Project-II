@@ -26,5 +26,4 @@ module "terraform-module" {
     region = "us-east-1" # This is the region.
     rds_snapshot = "arn:aws:rds:us-east-1:198550855569:snapshot:terraform-rds-snapshot" # Snapshot of the database you want used in your application.
     rds_secret_name = "terraform/rds/secret" # This is the secrets where the database credentials are stored.
-    depends_on = [module.aws-vpc]
 }
