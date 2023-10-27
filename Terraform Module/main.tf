@@ -1,7 +1,7 @@
 # DB Subnet group for RDS database
 resource "aws_db_subnet_group" "db_subnet_group" {
   name                          = "terraform-vpc-db-subnet-group"
-  subnet_ids                    = data.aws_subnets.private_subnets.ids
+  subnet_ids                    = data.aws_subnets.public_subnets.ids
 }
 
 # Security group for RDS Database
@@ -54,6 +54,8 @@ resource "aws_ecs_task_definition" "task_definition" {
     operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
   }
+
+
 
   execution_role_arn = var.execution_role_arn
   task_role_arn = var.ecs_task_role_arn
