@@ -19,12 +19,12 @@ module "aws-vpc" {
 }
 
 module "terraform-module" {
-    source = "../Terraform Module"
-    vpc_id = module.aws-vpc.vpc_id
-    hosted_zone = "steffenaws.net"
-    certificate_arn = "arn:aws:acm:us-east-1:198550855569:certificate/5df6eb6e-95a0-4fa1-ad66-9791a84cac4f"
-    region = "us-east-1"
-    rds_snapshot = "arn:aws:rds:us-east-1:198550855569:snapshot:terraform-rds-snapshot"
-    rds_secret_name = "terraform/rds/secret"
+    source = "../Terraform Module" # This calls the module.
+    vpc_id = module.aws-vpc.vpc_id # This field requires a VPC to already be made. VPC made via the official VPC module above.
+    hosted_zone = "steffenaws.net" # This requires you to have a Route53 Hosted Zone.
+    certificate_arn = "arn:aws:acm:us-east-1:198550855569:certificate/5df6eb6e-95a0-4fa1-ad66-9791a84cac4f" # This requires you to have a ACM certificate made that is associated with your goal record.
+    region = "us-east-1" # This is the region.
+    rds_snapshot = "arn:aws:rds:us-east-1:198550855569:snapshot:terraform-rds-snapshot" # Snapshot of the database you want used in your application.
+    rds_secret_name = "terraform/rds/secret" # This is the secrets where the database credentials are stored.
    # depends_on = [module.aws-vpc]
 }
