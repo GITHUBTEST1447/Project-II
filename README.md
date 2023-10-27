@@ -1,9 +1,11 @@
 <html>
-  <head></head>
+  <head>
+    <title>Project II - Terraform + AWS + Docker/ECS + GitHub Actions</title>
+  </head>
 
   <body>
-    <p1>
+    <p>
         To run project, you must either use the provided Root Module, or create your own. Refer to provided Root Module for required parameters when calling the Terraform Module.
-    </p1>
+    </p>
   </body>
 </html>
