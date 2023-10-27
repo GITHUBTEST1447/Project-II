@@ -95,6 +95,15 @@ locals {
           "value": "${aws_db_instance.database.arn}"
         }
       ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs" ,
+          "awslogs-create-group": "true"
+        }
+      },
       "ephemeralStorage": {
         "sizeInGiB": 20
       },
