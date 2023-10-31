@@ -30,8 +30,8 @@ jobs:
           echo "AWS_SESSION_TOKEN=$(echo $CREDS_JSON | jq -r .Credentials.SessionToken)" >> $GITHUB_ENV
       - name: Initialize S3 backend
         run: |
+          ls -al ./Remote\ Backend\ Module
           cd ./Remote\ Backend\ Module
-          ls
           terraform init
           terraform apply -auto-approve
           cd ..
