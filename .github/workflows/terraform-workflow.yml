@@ -6,17 +6,22 @@ jobs:
     container:
       image: hashicorp/terraform
     steps:
+
       - name: Retrive code from repository
         uses: actions/checkout@v3
+
       - name: Install nodejs
         run: |
           apk add --update nodejs npm 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+
+      - name: Assume AWS Role
+        run: |
+          CREDS_JSON=$(aws sts assume-role --role-arn "arn:aws:iam::060477591397:role/OrganizationAccountAccessRole" --role-session-name "GitHubActions")
+          echo "AWS_DEFAULT_REGION=us-east-1" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=$(echo $CREDS_JSON | jq -r .Credentials.AccessKeyId)" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=$(echo $CREDS_JSON | jq -r .Credentials.SecretAccessKey)" >> $GITHUB_ENV
+          echo "AWS_SESSION_TOKEN=$(echo $CREDS_JSON | jq -r .Credentials.SessionToken)" >> $GITHUB_ENV
+          
       - name: Deploy terraform
         run: |
           cd ./Root\ Module
