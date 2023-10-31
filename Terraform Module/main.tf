@@ -107,6 +107,18 @@ resource "aws_lb_target_group" "target_group" {
     protocol =  "HTTP"
     target_type = "ip"
     vpc_id =    var.vpc_id
+
+    health_check {
+    enabled             = true
+    healthy_threshold   = 2
+    interval            = 30
+    matcher             = "200-299"
+    path                = "/"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = 5
+    unhealthy_threshold = 2
+  }
 }
 
 # Load Balancer for AWS ECS Service
@@ -163,10 +175,3 @@ resource "aws_route53_record" "route53_record" {
     evaluate_target_health = false
   }
 }
-
-# ECS CANT ACCESS RDS???? WTF
-
-# TERRAFORM TESTING IN CI/CD WORKFLOW
-# FIX SECURITY ISSUES, AWS SECRETS MANAGER
-# HEALTH CHECKS?
-
