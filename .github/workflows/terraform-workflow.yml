@@ -28,7 +28,18 @@ jobs:
           echo "AWS_ACCESS_KEY_ID=$(echo $CREDS_JSON | jq -r .Credentials.AccessKeyId)" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=$(echo $CREDS_JSON | jq -r .Credentials.SecretAccessKey)" >> $GITHUB_ENV
           echo "AWS_SESSION_TOKEN=$(echo $CREDS_JSON | jq -r .Credentials.SessionToken)" >> $GITHUB_ENV
+<<<<<<< HEAD
           
+=======
+      - name: Initialize S3 backend
+        run: |
+          ls -al ./Remote\ Backend\ Module
+          cd ./Remote\ Backend\ Module
+          terraform init
+          terraform apply -auto-approve
+          cd ..
+
+>>>>>>> 3fe98091c5c024810f7dcb81d6c8b48792b74177
       - name: Deploy terraform
         run: |
           cd ./Root\ Module
