@@ -7,12 +7,19 @@ jobs:
       image: hashicorp/terraform
     steps:
 
-      - name: Retrive code from repository
+      - name: Retrieve code from repository
         uses: actions/checkout@v3
 
-      - name: Install nodejs
+      - name: Install nodejs, AWS CLI
         run: |
-          apk add --update nodejs npm 
+          apk add --update nodejs npm jq curl py3-pip
+          pip3 install awscli
+
+      - name: Setup initial AWS credentials
+        run: |
+          echo "AWS_DEFAULT_REGION=us-east-1" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
 
       - name: Assume AWS Role
         run: |
@@ -21,7 +28,7 @@ jobs:
           echo "AWS_ACCESS_KEY_ID=$(echo $CREDS_JSON | jq -r .Credentials.AccessKeyId)" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=$(echo $CREDS_JSON | jq -r .Credentials.SecretAccessKey)" >> $GITHUB_ENV
           echo "AWS_SESSION_TOKEN=$(echo $CREDS_JSON | jq -r .Credentials.SessionToken)" >> $GITHUB_ENV
-          
+
       - name: Deploy terraform
         run: |
           cd ./Root\ Module
