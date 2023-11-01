@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "task_definition" {
 
 
 
-  execution_role_arn = var.execution_role_arn
+  execution_role_arn = var.ecs_task_role_arn
   task_role_arn = var.ecs_task_role_arn
   container_definitions = local.container_definition
 }

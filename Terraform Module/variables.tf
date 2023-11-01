@@ -54,12 +54,8 @@ data "aws_subnets" "public_subnets" { # Gathers all subnets in the VPC
     }
 }
 
-variable "execution_role_arn" {
-    default = "arn:aws:iam::198550855569:role/ecsTaskExecutionRole"
-}
-
 variable "ecs_task_role_arn" {
-    default = "arn:aws:iam::198550855569:role/ECS-FULL-ACCESS"
+    default = "arn:aws:iam::060477591397:role/ECS-FULL-ACCESS"
 }
 
 # Container definition for ECS task
